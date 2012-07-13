@@ -23,10 +23,10 @@ Basic usage:
         console.log(collection.length);
 
 		//What about Place #1?
-		console.log(collection.get(1,function(model){
+		collection.get(1,function(model){
 			//Print Place with id 1
 			console.log(model);
-		}));
+		});
 
     });
 
@@ -111,7 +111,7 @@ Retrieves all the items from a particular collection and calls the `add` method 
 
 ## Synchronization Module ##
 
-Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module**. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API. This module depends on [jQuery](http://jquery.com/) to make the AJAX requests.
+Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module** to do. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API. This module depends on [jQuery](http://jquery.com/) to make the AJAX requests.
 
 Although this is a very important component of the library you probably won't directly interact with it.
 
