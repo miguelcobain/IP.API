@@ -1,6 +1,6 @@
 # Instant Places API Client #
 
-Instant Places API Client is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications.
+Instant Places API Client (or IP.API) is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications.
 
 ## Getting Started ##
 
@@ -56,9 +56,9 @@ Currently, `Model` only binds setters for local properties.
 
 - **get** `model.get(attributes,callback)`
 
-Using assynchronous getters to get multiple attributes might become cumbersome. `model.get` is a composite getter that tries to easy the task of fetching attributes.
+Using asynchronous getters to get multiple attributes might become cumbersome. `model.get` is a composite getter that tries to ease the task of fetching attributes.
 
-With normal getters, you would have to do:
+With the normal asynchronous getters, you would have to do:
 
 	model.getA(function(a){
 		model.getB(function(b){
@@ -93,19 +93,43 @@ This method is used to set attributes on a particular model. It takes an object 
 
 ### API ###
 
+- **add** `collection.add(models)`
+
+Adds a model (or a list of models) to the collection. It transforms barebone javascript objects to models.
+
+----------
+
+- **get** `collection.get(id)`
+
+Returns the model which has the specified id.
+
+----------
+
 - **getAll** `collection.getAll(callback)`
 
-When a Model is created, it binds getters and setters to itself for each attribute it has. Because attributes might be remote (i.e. not currently in memory), you must provide a callback. Your callback will be executed with the corresponding attribute as an argument.
+Retrieves all the items from a particular collection and calls the `add` method on each of them.
 
 ## Synchronization Module ##
 
+Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module**. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API.
+
+Although this is a crucial component of the library you probably won't directly interact with it.
+
 ## Predefined Collections ##
+
+IP.API registers some default Collections that map directly to Instant Places Models.
+
+
 
 # Downloading or Building IP.API #
 
-Build:
+IP.API was developed using [RequireJS](http://requirejs.org/) and consequently using a modular technique called [AMD](http://requirejs.org/docs/whyamd.html). You can just download the built file (minified or not). If you prefer you can build the library using [r.js](http://requirejs.org/docs/optimization.html). The build files are already included in the repository (one for the minified version and another for the debug non-minified version).
+
+After you [install r.js](http://requirejs.org/docs/optimization.html#download), you can run the following command:
 
     $ r.js -o <buildfile>
+
+The built javascript file should appear in the `build/` directory.
 
 ## Future Work ##
 
@@ -116,3 +140,4 @@ Build:
 - Errors
 - Better semantic support for links (only GET's for now)
 - Investigate possible optimizations using localStorage
+- Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state. :)
