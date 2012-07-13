@@ -111,15 +111,24 @@ Retrieves all the items from a particular collection and calls the `add` method 
 
 ## Synchronization Module ##
 
-Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module**. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API.
+Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module**. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API. This module depends on [jQuery](http://jquery.com/) to make the AJAX requests.
 
-Although this is a crucial component of the library you probably won't directly interact with it.
+Although this is a very important component of the library you probably won't directly interact with it.
 
 ## Predefined Collections ##
 
-IP.API registers some default Collections that map directly to Instant Places Models.
+IP.API registers some default Collections that map directly to Instant Places Models which are:
 
+- IP.API.Places
+- IP.API.Activity
+- IP.API.Applications
+- IP.API.Identities
+- IP.API.Signs
+- IP.API.Items
+- IP.API.CollectionItems
+- IP.API.Publishers
 
+All of these are normal instances of `Collection` and you can start using them. For example, you can get all the places doing `IP.API.Places.getAll(yourCallback)`.
 
 # Downloading or Building IP.API #
 
@@ -140,4 +149,5 @@ The built javascript file should appear in the `build/` directory.
 - Errors
 - Better semantic support for links (only GET's for now)
 - Investigate possible optimizations using localStorage
+- Maybe get rid of the jQuery dependency
 - Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state. :)
