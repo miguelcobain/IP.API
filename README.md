@@ -1,12 +1,12 @@
 # Instant Places API Client #
 
-Instant Places API Client (or IP.API) is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications.
+Instant Places API Client (or IP.API) is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications. Some of its concepts were borrowed from [BackboneJS](http://backbonejs.org/).
 
-## Getting Started ##
+# Getting Started #
 
 The usage is very simple. 
 
-1. Download the built javascript file.
+1. Download the built javascript file from the `build/` directory.
 2. Include it in your HTML page (or whatever javascript dependency manager you're using).
 3. The `IP.API` namespace is created for you, and you can start using it. See examples below.
 
@@ -34,7 +34,7 @@ Basic usage:
 
 ## Model ##
 
-`Model` is a core component of the library. It is a generic representation of a resource in Instant Places. You can think of it as a *wrapper* to javascript objects to extend their functionality. A Model can have **local attributes** like any regular javascript object, but can also have attributes that can be retrieved through additional API calls, which we call **remote attributes**. This phenomenon is frequent in relationships between sub-resources and resource. For example, a **Place** (resource) representation has links to retrieve its **Activities** (sub-resource). `Model` abstracts this particularities and allows you to treat every attribute equally.
+`Model` is a core component of the library. It is a generic representation of a resource in Instant Places. You can think of it as a *wrapper* of javascript objects to extend their functionality. A Model can have **local attributes** like any regular javascript object, but can also have attributes that can be retrieved through additional API calls, which we call **remote attributes**. This phenomenon is frequent in relationships between sub-resources and resource. For example, a **Place** (resource) representation has links to retrieve its **Activities** (sub-resource). `Model` abstracts this particularities and allows you to treat every attribute equally.
 
 ### API ###
 
@@ -50,7 +50,7 @@ The goal is to abstract the access to attributes, providing a consistent API. Th
 
 *NOT FULLY IMPLEMENTED YET*
 
-Currently, `Model` only binds setters for local properties.
+Currently, `Model` only binds setters for local properties, which isn't problematic since the Instant Places API is mostly readonly.
 
 ----------
 
@@ -87,9 +87,15 @@ This was inspired by *Jared Jacobs*' "shopping list pattern" illustrated in this
 
 This method is used to set attributes on a particular model. It takes an object containing the attributes to set and binds getters and setters to them. Since currently the Instant Places API is mostly readonly, setters don't have that much importance yet.
 
+----------
+
+- **update** `model.update(callback)`
+
+Updates the model's attributes with data from Sync module.
+
 ## Collection ##
 
-`Collection` represents a set of `Model` of a particular resource.
+`Collection` represents a set of `Model` of a particular resource. You can think of it as a "wrapper" of an array of models.
 
 ### API ###
 
@@ -99,9 +105,9 @@ Adds a model (or a list of models) to the collection. It transforms barebone jav
 
 ----------
 
-- **get** `collection.get(id)`
+- **get** `collection.get(id, callback)`
 
-Returns the model which has the specified id.
+Returns the model which has the specified id regardless if it is already in memory or on the server.
 
 ----------
 
@@ -140,13 +146,13 @@ After you [install r.js](http://requirejs.org/docs/optimization.html#download), 
 
 The built javascript file should appear in the `build/` directory.
 
-## Future Work ##
+# Future Work #
 
 - Event bindings to Collections and Models
     - Change
     - Add
     - Remove
-- Errors
+- Error handling
 - Better semantic support for links (only GET's for now)
 - Investigate possible optimizations using localStorage
 - Maybe get rid of the jQuery dependency

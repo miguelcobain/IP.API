@@ -13,11 +13,11 @@ define(['jquery'], function($){
 		var type = methodMap[method];
 		
 		if (!options.url) {
-			var url = getValue(model, 'url') || urlError();
+			options.url = getValue(model, 'url') || urlError();
 		}
 		
 		$.ajax({
-			url: url,
+			url: options.url,
 			type: type,
 			dataType: 'json',
 			success: options.success

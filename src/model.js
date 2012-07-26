@@ -1,6 +1,9 @@
-define(function() {
+define(['sync'],function(Sync) {
 	
-	var Model = function(attrs, options){
+	var SELF_REL = 'self';
+	var LINK_FIELD = 'links';
+	
+	var Model = function(attrs){
 		
 		//Model's attributes
 		this.attrs = {};
@@ -58,21 +61,32 @@ define(function() {
 		// helper function to bind getters for remote attributes
 		var bindGetterSetterRel = function(obj, p, link) {
 			obj[('get ' + p).camelize()] = obj._getters[p] = function(callback) {
-				setTimeout(function(){
+				/*setTimeout(function(){
 					callback('GET');
-				},2000);
+				},2000);*/
+				
+				return Sync.call(this, 'read', null, {success:callback,url:link.href});
+				//TODO decide if link is collection or model and set it to current model
 			}
 		};
 		//Bind Getters and Setters
 		for (var p in attrs){
-			if(p!=='links'){
-				this.attrs[p] = attrs[p];
-				bindGetterSetter(this, p, this.attrs);
+			if(p!==LINK_FIELD){
+				//check if it is an embbeded resource or just a common property
+				if(attrs[p].hasOwnProperty(LINK_FIELD)){
+					//if it has a links field, then it is an embbed resource
+					this.attrs[p] = new Model(attrs[p]);
+					bindGetterSetter(this, p, this.attrs);
+				}
+				else{
+					this.attrs[p] = attrs[p];
+					bindGetterSetter(this, p, this.attrs);
+				}
 			}
 			else{
 				var links = attrs[p];
 				for(var i=0; i<links.length; i++){
-					if(links[i].rel === 'self'){
+					if(links[i].rel === SELF_REL){
 						//Use link provided by the API
 						//Don't bind getter for this link
 						this.url = links[i].href;
@@ -93,6 +107,16 @@ define(function() {
 	Model.prototype.url = function() {
 		var base = getValue(this, 'urlRoot') || getValue(this.collection, 'url') || urlError();
 		return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + encodeURIComponent(this.attrs.id);
+	};
+	
+	Model.prototype.update = function(callback){
+		var model = this;
+		var success = callback;
+		callback = function(resp, status, xhr) {
+			model.set(resp);
+			if (success) success(model, resp);
+		};
+		return Sync.call(this, 'read', this, {success:callback});
 	};
 	
 	var getValue = function(object, prop) {

@@ -9,21 +9,37 @@ define(['model','sync'],function(Model, Sync) {
 		this.url = options.url;
 	}
 	
-	Collection.prototype.getAll = function(options) {
-		options = options ? options : {};
+	Collection.prototype.getAll = function(callback) {
 		var collection = this;
-		var success = options.success;
-		options.success = function(resp, status, xhr) {
+		var success = callback;
+		callback = function(resp, status, xhr) {
 			if(status == 'success')
 				collection.add(resp.items);
 			if (success) success(collection, resp);
 		};
-		return Sync.call(this, 'read', this, options);
+		return Sync.call(this, 'read', this, {});
 	};
 	
-	Collection.prototype.get = function(id){
+	Collection.prototype.get = function(id, callback){
+		//do nothing if id is null
 		if (id == null) return void 0;
-		return this._byId[id.id != null ? id.id : id];
+		
+		//return and execute callback imediatly if the model is in memory
+		var el = this._byId[id.id != null ? id.id : id];
+		if(el){
+			callback(el)
+			return el;
+		}
+		//if it isn't, let's retrieve it from server
+		else {
+			var collection = this;
+			var model = new Model({id:id});
+			model.collection = this;
+			model.update(function(model){
+				collection.add(model);
+				if(callback) callback(model);
+			});
+		}
 	};
 	
 	Collection.prototype.add = function(models) {
