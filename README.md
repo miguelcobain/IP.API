@@ -142,9 +142,11 @@ IP.API registers some default Collections that map directly to Instant Places Mo
 - IP.API.CollectionItems
 - IP.API.Publishers
 
-All of these are normal instances of `Collection` and you can start using them. For example, you can get all the places doing `IP.API.Places.getAll(yourCallback)`.
+All of these are normal instances of `Collection` and you can start using them. For example, you can quickly retrieve all the places writing `IP.API.Places.getAll(yourCallback)`.
 
 These correspond to the Instant Places API's entry points. In the future, these entry points will also be retrieved dynamically and will not hardcoded.
+
+
 
 # Downloading or Building IP.API #
 
@@ -166,4 +168,16 @@ The built javascript file should appear in the `build/` directory.
 - Better semantic support for links (only GET's for now)
 - Investigate possible optimizations using localStorage
 - Maybe get rid of the jQuery dependency
-- Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state, but this is the ultimate goal. :)
+- Authentication?
+
+- **Extension Points**
+
+    - The ultimate goal of this library is to allow you to interact with any REST API. To do so, some assumptions were made, but we intend to make them overridable because your API may have its own particularities. Some of these extension points are:
+
+        - Link parsing
+        - Id parsing
+        - Decision of wether we've requested a Collection or a Model
+        - Mapping of link rel's to HTTP operations
+        - More to come...
+
+Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state, but this is the ultimate goal. :)
