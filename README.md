@@ -44,6 +44,8 @@ When a Model is created, it binds getters and setters to itself for each attribu
 
 The goal is to abstract the access to attributes, providing a consistent API. The developer shouldn't care about wether the attribute is in memory or not. Also, this allows the API and the library to be loosely coupled, e.g. if the API decides to turn a previouly sent attribute into something remote (a sub-resource), the library still works as expected.
 
+Once the remote attribute is fetched it is set as a local attribute. Further accesses are faster since they can be fetched from memory.
+
 ----------
 
 - **[dynamic setters]** `model.setProperty(value, [callback])`
@@ -115,6 +117,12 @@ Returns the model which has the specified id regardless if it is already in memo
 
 Retrieves all the items from a particular collection and calls the `add` method on each of them.
 
+----------
+
+- **forEach** `collection.forEach(function)`
+
+Allows you to iterate the collection. For each item, `function` is called with the item and its corresponding index as arguments.
+
 ## Synchronization Module ##
 
 Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module** to do. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API. This module depends on [jQuery](http://jquery.com/) to make the AJAX requests.
@@ -136,6 +144,8 @@ IP.API registers some default Collections that map directly to Instant Places Mo
 
 All of these are normal instances of `Collection` and you can start using them. For example, you can get all the places doing `IP.API.Places.getAll(yourCallback)`.
 
+These correspond to the Instant Places API's entry points. In the future, these entry points will also be retrieved dynamically and will not hardcoded.
+
 # Downloading or Building IP.API #
 
 IP.API was developed using [RequireJS](http://requirejs.org/) and consequently using a modular technique called [AMD](http://requirejs.org/docs/whyamd.html). You can just download the built file (minified or not). If you prefer you can build the library using [r.js](http://requirejs.org/docs/optimization.html). The build files are already included in the repository (one for the minified version and another for the debug non-minified version).
@@ -156,4 +166,4 @@ The built javascript file should appear in the `build/` directory.
 - Better semantic support for links (only GET's for now)
 - Investigate possible optimizations using localStorage
 - Maybe get rid of the jQuery dependency
-- Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state. :)
+- Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state, but this is the ultimate goal. :)

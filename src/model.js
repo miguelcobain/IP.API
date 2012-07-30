@@ -1,4 +1,4 @@
-define(['sync'],function(Sync) {
+define(['sync','require'],function(Sync, require) {
 	
 	var SELF_REL = 'self';
 	var LINK_FIELD = 'links';
@@ -61,19 +61,35 @@ define(['sync'],function(Sync) {
 		// helper function to bind getters for remote attributes
 		var bindGetterSetterRel = function(obj, p, link) {
 			obj[('get ' + p).camelize()] = obj._getters[p] = function(callback) {
-				/*setTimeout(function(){
-					callback('GET');
-				},2000);*/
 				
-				return Sync.call(this, 'read', null, {success:callback,url:link.href});
-				//TODO decide if link is collection or model and set it to current model
+				var success = function(data){
+					if(data && data.items && data.items instanceof Array){
+						//Collection
+						var Collection = require('collection');
+						var attr = {};
+						attr[p] = new Collection({url:link.href});
+						attr[p].add(data.items);
+						obj.set(attr);
+					}
+					else{
+						//Model
+						var attr = {};
+						attr[p] = new Model(data);
+						obj.set(attr);
+					}
+					
+					if(callback)
+						callback(obj.attrs[p]);
+				}
+				
+				return Sync.call(this, 'read', null, {success:success,url:link.href});
 			}
 		};
 		//Bind Getters and Setters
 		for (var p in attrs){
 			if(p!==LINK_FIELD){
 				//check if it is an embbeded resource or just a common property
-				if(attrs[p].hasOwnProperty(LINK_FIELD)){
+				if(attrs[p] && attrs[p].hasOwnProperty(LINK_FIELD)){
 					//if it has a links field, then it is an embbed resource
 					this.attrs[p] = new Model(attrs[p]);
 					bindGetterSetter(this, p, this.attrs);

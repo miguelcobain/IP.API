@@ -17,7 +17,7 @@ define(['model','sync'],function(Model, Sync) {
 				collection.add(resp.items);
 			if (success) success(collection, resp);
 		};
-		return Sync.call(this, 'read', this, {});
+		return Sync.call(this, 'read', this, {success:callback});
 	};
 	
 	Collection.prototype.get = function(id, callback){
@@ -64,6 +64,12 @@ define(['model','sync'],function(Model, Sync) {
 			this.length++;	
 		}
 	};
+	
+	Collection.prototype.forEach = function(func){
+		for(var i=0; i<this.models.length; i++){
+			func.apply(this,[this.models[i],i]);
+		}
+	}
 	
 	return Collection;
 	
