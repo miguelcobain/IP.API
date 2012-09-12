@@ -32,7 +32,7 @@ require.config({
 	}
 });
 
-require(['collection', 'model'], function(Collection, Model) {
+define('main',['collection', 'model'], function(Collection, Model) {
 
 	//Declare namespace    
     var model = namespace('IP.API');

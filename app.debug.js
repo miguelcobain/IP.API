@@ -5,7 +5,8 @@
 	},
     name: '../almond',
     include: ['main'],
-    out: 'build/ip.api.debug.js',
+    insertRequire: ['main'],
+    out: 'build/ip.api.js',
     wrap: true,
     optimize: 'none'
 })

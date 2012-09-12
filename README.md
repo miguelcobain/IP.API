@@ -1,6 +1,6 @@
 # Instant Places API Client #
 
-Instant Places API Client (or IP.API) is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications. Some of its concepts were borrowed from [BackboneJS](http://backbonejs.org/).
+Instant Places API Client (or IP.API) is a javascript library that abstracts the usage of the Instant Places REST API. It was designed to be used with any javascript based applications, such as [Instant Places](http://www.instantplaces.org/) applications. Some of its concepts were kindly borrowed from [BackboneJS](http://backbonejs.org/).
 
 # Getting Started #
 
@@ -127,7 +127,7 @@ Allows you to iterate the collection. For each item, `function` is called with t
 
 Models and Collections are only aware of [CRUD](http://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations. The task of synchronizing data to another location is up to a **Sync Module** to do. This library is bundled with a module that maps CRUD to HTTP requests and communicates with the Instant Places API. This module depends on [jQuery](http://jquery.com/) to make the AJAX requests.
 
-Although this is a very important component of the library you probably won't directly interact with it.
+Although this is a very important component of the library you probably won't directly interact with it. In a nutshell, this module is responsible for transforming higher level CRUD operations into some other lower level protocol operations (HTTP, localStorage, etc).
 
 ## Predefined Collections ##
 
@@ -169,7 +169,7 @@ The built javascript file should appear in the `build/` directory.
 - Investigate possible optimizations using localStorage
 - Maybe get rid of the jQuery dependency
 - Authentication?
-
+- templated links
 - **Extension Points**
 
     - The ultimate goal of this library is to allow you to interact with any REST API. To do so, some assumptions were made, but we intend to make them overridable because your API may have its own particularities. Some of these extension points are:
@@ -177,7 +177,7 @@ The built javascript file should appear in the `build/` directory.
         - Link parsing
         - Id parsing
         - Decision of wether we've requested a Collection or a Model
-        - Mapping of link rel's to HTTP operations
+        - Mapping of link rel's to CRUD operations (in order to properly use the Sync module)
         - More to come...
 
 Ideally, this library should be generic and not tied to Instant Places but to HATEOAS-enabled REST API's in general. It's still in an embrionary state, but this is the ultimate goal. :)
