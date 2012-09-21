@@ -1,5 +1,8 @@
-define(['jquery'], function($){
-
+define(['jquery','iexhr'], function($,IEXMLHttpRequest){
+	
+	// Needed to force jquery to allow cross domain calls (in IE)
+	$.support.cors = true;
+		
 	//CRUD to HTTP dictionary
 	var methodMap = {
 		'create' : 'POST',
@@ -20,6 +23,8 @@ define(['jquery'], function($){
 			url: options.url,
 			type: type,
 			dataType: 'json',
+			xhr : IEXMLHttpRequest || $.ajaxSettings.xhr,
+      		crossDomain: true,
 			success: options.success
 		});
 	};

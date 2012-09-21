@@ -28,8 +28,10 @@ String.prototype.camelize = function() {
 
 require.config({
 	paths : {
-		jquery : '../lib/jquery.min'
+		jquery : '../lib/jquery.min',
+		iexhr : '../lib/ie.xhr'
 	}
+	
 });
 
 define('main',['collection', 'model'], function(Collection, Model) {
