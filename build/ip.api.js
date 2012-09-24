@@ -458,7 +458,15 @@ define('sync',['jquery','iexhr'], function($,IEXMLHttpRequest){
 			dataType: 'json',
 			xhr : IEXMLHttpRequest || $.ajaxSettings.xhr,
       		crossDomain: true,
-			success: options.success
+			success: options.success,
+			error: function(jqXHR, textStatus, errorThrown){
+				if((typeof IP.API.onerror) === 'function'){
+					IP.API.onerror(jqXHR, textStatus, errorThrown);
+				}
+				else{
+					console.error('Sync error.');
+				}
+			}
 		});
 	};
 	
@@ -736,10 +744,6 @@ function namespace(namespaceString) {
 }
 
 String.prototype.camelize = function() {
-    /*return this
-        .replace(/\s(.)/g, function($1) { return $1.toUpperCase(); })
-        .replace(/\s/g, '')
-        .replace(/^(.)/, function($1) { return $1.toLowerCase(); });*/
 	return this.replace(/-+(.)?/g, function(match, chr) {
 		return chr ? chr.toUpperCase() : '';
 	});
