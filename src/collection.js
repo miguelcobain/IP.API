@@ -9,7 +9,13 @@ define(['model','sync'],function(Model, Sync) {
 		this.url = options.url;
 	}
 	
-	Collection.prototype.getAll = function(callback) {
+	Collection.prototype.getAll = function(data, callback) {
+		
+		if(!callback){
+			callback = data;
+			data = {};
+		}
+		
 		var collection = this;
 		var success = callback;
 		callback = function(resp, status, xhr) {
@@ -17,10 +23,11 @@ define(['model','sync'],function(Model, Sync) {
 				collection.add(resp.items);
 			if (success) success(collection, resp);
 		};
-		return Sync.call(this, 'read', this, {success:callback});
+		return Sync.call(this, 'read', this, {success:callback, data: data});
 	};
 	
 	Collection.prototype.get = function(id, callback){
+				
 		//do nothing if id is null
 		if (id == null) return void 0;
 		

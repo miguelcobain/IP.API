@@ -22,6 +22,7 @@ define(['jquery','iexhr'], function($,IEXMLHttpRequest){
 		$.ajax({
 			url: options.url,
 			type: type,
+			data: options.data,
 			dataType: 'json',
 			xhr : IEXMLHttpRequest || $.ajaxSettings.xhr,
       		crossDomain: true,

@@ -60,7 +60,12 @@ define(['sync','require'],function(Sync, require) {
 		};		
 		// helper function to bind getters for remote attributes
 		var bindGetterSetterRel = function(obj, p, link) {
-			obj[('get ' + p).camelize()] = obj._getters[p] = function(callback) {
+			obj[('get ' + p).camelize()] = obj._getters[p] = function(data, callback) {
+				
+				if(!callback){
+					callback = data;
+					data = {};
+				}
 				
 				var success = function(data){
 					if(data && data.items && data.items instanceof Array){
@@ -82,7 +87,7 @@ define(['sync','require'],function(Sync, require) {
 						callback(obj.attrs[p]);
 				}
 				
-				return Sync.call(this, 'read', null, {success:success,url:link.href});
+				return Sync.call(this, 'read', null, {success:success,url:link.href,data:data});
 			}
 		};
 		//Bind Getters and Setters

@@ -454,6 +454,7 @@ define('sync',['jquery','iexhr'], function($,IEXMLHttpRequest){
 		$.ajax({
 			url: options.url,
 			type: type,
+			data: options.data,
 			dataType: 'json',
 			xhr : IEXMLHttpRequest || $.ajaxSettings.xhr,
       		crossDomain: true,
@@ -536,7 +537,12 @@ define('model',['sync','require'],function(Sync, require) {
 		};		
 		// helper function to bind getters for remote attributes
 		var bindGetterSetterRel = function(obj, p, link) {
-			obj[('get ' + p).camelize()] = obj._getters[p] = function(callback) {
+			obj[('get ' + p).camelize()] = obj._getters[p] = function(data, callback) {
+				
+				if(!callback){
+					callback = data;
+					data = {};
+				}
 				
 				var success = function(data){
 					if(data && data.items && data.items instanceof Array){
@@ -558,7 +564,7 @@ define('model',['sync','require'],function(Sync, require) {
 						callback(obj.attrs[p]);
 				}
 				
-				return Sync.call(this, 'read', null, {success:success,url:link.href});
+				return Sync.call(this, 'read', null, {success:success,url:link.href,data:data});
 			}
 		};
 		//Bind Getters and Setters
@@ -635,7 +641,13 @@ define('collection',['model','sync'],function(Model, Sync) {
 		this.url = options.url;
 	}
 	
-	Collection.prototype.getAll = function(callback) {
+	Collection.prototype.getAll = function(data, callback) {
+		
+		if(!callback){
+			callback = data;
+			data = {};
+		}
+		
 		var collection = this;
 		var success = callback;
 		callback = function(resp, status, xhr) {
@@ -643,10 +655,11 @@ define('collection',['model','sync'],function(Model, Sync) {
 				collection.add(resp.items);
 			if (success) success(collection, resp);
 		};
-		return Sync.call(this, 'read', this, {success:callback});
+		return Sync.call(this, 'read', this, {success:callback, data: data});
 	};
 	
 	Collection.prototype.get = function(id, callback){
+				
 		//do nothing if id is null
 		if (id == null) return void 0;
 		
