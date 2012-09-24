@@ -20,10 +20,9 @@ function namespace(namespaceString) {
 }
 
 String.prototype.camelize = function() {
-    return this
-        .replace(/\s(.)/g, function($1) { return $1.toUpperCase(); })
-        .replace(/\s/g, '')
-        .replace(/^(.)/, function($1) { return $1.toLowerCase(); });
+	return this.replace(/-+(.)?/g, function(match, chr) {
+		return chr ? chr.toUpperCase() : '';
+	});
 }
 
 require.config({

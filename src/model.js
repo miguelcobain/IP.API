@@ -50,17 +50,17 @@ define(['sync','require'],function(Sync, require) {
 	Model.prototype.set = function(attrs){
 		// helper function to bind getters and setters for in memory attributes
 		var bindGetterSetter = function(obj, p, properties) {
-			obj[('get ' + p).camelize()] = obj._getters[p] = function(callback) {
+			obj[('get-' + p).camelize()] = obj._getters[p] = function(callback) {
 				callback(properties[p]);
 			}
-			obj[('set ' + p).camelize()] = function(val) {
+			obj[('set-' + p).camelize()] = function(val) {
 				properties[p] = val;
 				return this;
 			}
 		};		
 		// helper function to bind getters for remote attributes
 		var bindGetterSetterRel = function(obj, p, link) {
-			obj[('get ' + p).camelize()] = obj._getters[p] = function(data, callback) {
+			obj[('get-' + p).camelize()] = obj._getters[p] = function(data, callback) {
 				
 				if(!callback){
 					callback = data;
@@ -68,7 +68,7 @@ define(['sync','require'],function(Sync, require) {
 				}
 				
 				var success = function(data){
-					if(data && data.items && data.items instanceof Array){
+					if(data && !data.id && data.items && data.items instanceof Array){
 						//Collection
 						var Collection = require('collection');
 						var attr = {};
