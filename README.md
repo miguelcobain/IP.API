@@ -34,7 +34,7 @@ Basic usage:
 
 ## Model ##
 
-`Model` is a core component of the library. It is a generic representation of a resource in Instant Places. You can think of it as a *wrapper* of javascript objects to extend their functionality. A Model can have **local attributes** like any regular javascript object, but can also have attributes that can be retrieved through additional API calls, which we call **remote attributes**. This phenomenon is frequent in relationships between sub-resources and resource. For example, a **Place** (resource) representation has links to retrieve its **Activities** (sub-resource). `Model` abstracts this particularities and allows you to treat every attribute equally.
+`Model` is a core component of the library. It is a generic representation of a resource in Instant Places. You can think of it as a *wrapper* of javascript objects to extend their functionality. A Model can have **local attributes** like any regular javascript object, but can also have attributes that can be retrieved through additional API calls, which we call **remote attributes**. This phenomenon is frequent in relationships between resources. For example, a **Place** (resource) representation has links to retrieve its **Activities** (sub-resource). `Model` abstracts this particularities and allows you to treat every attribute equally.
 
 ### API ###
 
@@ -96,6 +96,12 @@ This method is used to set attributes on a particular model. It takes an object 
 - **update** `model.update(callback)`
 
 Updates the model's attributes with data from Sync module.
+
+----------
+
+- **attrs** `model.attrs`
+
+Every model has an `attrs` object which contains all the local attributes. If you are sure that an attribute is local you can access it like `attrs.[property name]`. Keep in mind that using getter methods is much more *future proof* because they are agnostic about if the attributes are local or remote.
 
 ## Collection ##
 

@@ -27,6 +27,7 @@ define(['jquery','iexhr'], function($,IEXMLHttpRequest){
 			xhr : IEXMLHttpRequest || $.ajaxSettings.xhr,
       		crossDomain: true,
 			success: options.success,
+			timeout:3000,
 			error: function(jqXHR, textStatus, errorThrown){
 				if((typeof IP.API.onerror) === 'function'){
 					IP.API.onerror(jqXHR, textStatus, errorThrown);
